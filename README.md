@@ -1,8 +1,13 @@
 # 🧪 Lab: AWS Lambda com Aliases + API Gateway com Stages
 
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/Edn_Lambda_API.jpg)
+
 > 🌩️ Gerencie múltiplos ambientes serverless com elegância, controle e boas práticas de DevOps na AWS.
 
 ---
+
+**Autor:** Halley Veras  
+**Curso: Developer – Escola da Nuvem** 
 
 ## 🎯 Objetivo
 
@@ -10,8 +15,6 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 
 - AWS Lambda + Aliases (`dev`, `prod`)
 - API Gateway + Stages (`Desenvolvimento`, `Producao`)
-
----
 
 ---
 
@@ -35,7 +38,12 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 6. Permissões: Criar nova função com permissões básicas.
 7. Clique em **Criar função**.
 
-📸 *[Adicione aqui o print da criação da função]*
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-24.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-24_1.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-29.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-30.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-31.png)
+
 
 ---
 
@@ -44,9 +52,40 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 1. Vá até a seção **Código**.
 2. Substitua o conteúdo pelo código de desenvolvimento:
 
-📥 [Download Código Desenvolvimento (.py)](https://bkt-lab-turmas.s3.us-east-1.amazonaws.com/C%C3%B3d.+py+do+ambiente+de+DESENVOLVIMENTO.txt)
+```python
+    import json
+    import os
+    
+    def lambda_handler(event, context):
+        try:
+            stage = event['requestContext']['stage']
+        except KeyError:
+            stage = 'desconhecido'
+    
+        response_body = {
+            'message': f'Ola do ambiente {stage}!',
+            'functionVersion': context.function_version,
+            'functionAlias': (
+                context.invoked_function_arn.split(':')[-1]
+                if ':' in context.invoked_function_arn else '$LATEST'
+            )
+        }
+    
+        return {
+            'statusCode': 200,
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            'body': json.dumps(response_body, ensure_ascii=False)
+        }### Features
+```
 
 3. Clique em **Deploy**.
+
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-34.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-35.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-36.png)
 
 ---
 
@@ -58,7 +97,10 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 4. Altere `requestContext.stage` para `"test-stage"`.
 5. Clique em **Testar** e verifique a resposta.
 
-📸 *[Adicione print da execução com sucesso]*
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-39.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-40.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-41.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-42.png)
 
 ---
 
@@ -75,7 +117,14 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 2. Nome: `dev` | Versão: `1`
 3. Copie o ARN e guarde.
 
-📸 *[Adicione print do alias dev]*
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-43.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-47.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-48.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-49.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-50.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-50_1.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-52.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-53.png)
 
 ---
 
@@ -83,10 +132,42 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 
 1. Substitua o código por:
 
-📥 [Download Código Produção (.py)](https://bkt-lab-turmas.s3.us-east-1.amazonaws.com/C%C3%B3d.+py+do+ambiente+de+PRODU%C3%87%C3%83O.txt)
+```python
+import json
+import os
+
+def lambda_handler(event, context):
+    try:
+        stage = event['requestContext']['stage']
+    except KeyError:
+        stage = 'desconhecido'
+
+    response_body = {
+        'message': f'Ola do ambiente de Producao!',
+        'functionVersion': context.function_version,
+        'functionAlias': (
+            context.invoked_function_arn.split(':')[-1]
+            if ':' in context.invoked_function_arn else '$LATEST'
+        )
+    }
+
+    return {
+        'statusCode': 200,
+        'headers': {
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        },
+        'body': json.dumps(response_body, ensure_ascii=False)
+    }
+
+```
 
 2. Clique em **Deploy**.
 3. Teste novamente com `teste-simulado`.
+
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_17-59.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-00.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-01.png)
 
 ---
 
@@ -96,7 +177,12 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 2. Criar alias: Nome `prod`, Versão `2`.
 3. Copie o ARN.
 
-📸 *[Adicione print do alias prod]*
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-01_1.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-02.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-02_1.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-03.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-04.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-05.png)
 
 ---
 
@@ -109,12 +195,22 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 3. Nome: `minha-api-proxy-lab-seunome`
 4. Tipo: Regional → Criar API
 
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-07.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-18.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-20.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-23.png)
+
+
 ---
 
 ### 📍 Criar Recurso `/hello`
 
 1. Em **Recursos** → Criar Recurso.
 2. Nome do recurso: `hello`
+
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-23_1.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-25.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-25_1.png)
 
 ---
 
@@ -125,6 +221,10 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 3. ARN: cole o ARN do alias `dev`.
 4. Clique em **Salvar e Testar**.
 
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-27.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-29.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-30.png)
+
 ---
 
 ### 🚀 Implantar Estágio `Desenvolvimento`
@@ -132,7 +232,8 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 1. Clique em **Implantar API** > Novo estágio: `Desenvolvimento`
 2. Descrição: `API/Lambda - Desenvolvimento`
 
-📸 *[Adicione print do estágio dev]*
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-32.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-33.png)
 
 ---
 
@@ -141,7 +242,8 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 1. Edite o método GET > integração > troque para ARN do alias `prod`.
 2. Implemente novo estágio: `Producao`.
 
-📸 *[Adicione print do estágio prod]*
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-35.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-36.png)
 
 ---
 
@@ -154,17 +256,17 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 
 3. Repita o teste para o estágio `Producao`.
 
-📸 *[Adicione prints de ambos os resultados]*
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-36_1.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-37.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-38.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-38_1.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-39.png)
+![1](https://raw.githubusercontent.com/HalleyVeras/aws-Lambda-Aliases-lab-developer-EDN/refs/heads/main/arquivos/2025-06-25_18-39_1.png)
+
 
 ---
 
-## 🧹 Parte 8: Limpeza
 
-1. Exclua a API Gateway criada.
-2. Exclua a Função Lambda.
-3. Pronto! 😎
-
----
 
 ## 💬 Conclusão
 
