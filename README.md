@@ -13,9 +13,6 @@ Este laboratório demonstra como criar uma arquitetura com **versionamento e amb
 
 ---
 
-## 📁 Estrutura Recomendada do Projeto
-
-
 ---
 
 ## 🧰 Pré-requisitos
